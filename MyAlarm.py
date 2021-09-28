@@ -26,4 +26,34 @@ def check_alarm_input(alarm_time):
             return True
 
     return False
+
 print("Set a time for the alarm (Ex. 06:30 or 18:30:00)")
+
+while True:
+    alarm_input = input('>> ')
+    try:
+        alarm_time = [int(n) for n in alarm_input.split(':')]
+        if check_alarm_input(alarm_time):
+            break
+        else:
+            raise ValueError
+    except ValueError:
+        print("ERROR: Enter time in HH:MM or HH:MM:SS format")
+
+seconds_hms = [3600, 60, 1]
+alarm_secs = sum( [ a * b for a, b in zip(seconds_hms[:len(alarm_time)], alarm_time) ] )
+now = datetime.datetime.now()
+current_time_secs = sum( [ a*b for a,b in zip(seconds_hms, [now.hour, now.minute, now.second ] ) ] )
+time_diff_secs = alarm_secs - current_time_secs
+
+if time_diff_secs < 0:
+    time_diff_secs += 86400
+
+print('Alarm set to go off in %s' % datetime.timedelta(seconds=time_diff_secs))
+
+time.sleep(time_diff_secs)
+print('Wake up!')
+with open('youtube_alarm_videos.txt', 'r') as alarm_file:
+    videos = alarm_file.readlines()
+
+webbrowser.open(random.choice(videos))

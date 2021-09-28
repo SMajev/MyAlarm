@@ -27,7 +27,8 @@ def check_alarm_input(alarm_time):
 
     return False
 
-print("Set a time for the alarm (Ex. 06:30 or 18:30:00)")
+
+print(f"Set a time for the alarm (Ex. 06:30 or 18:30:00)\nNow is >> {datetime.datetime.now().strftime('%H:%M')}")
 
 while True:
     alarm_input = input('>> ')
